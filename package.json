@@ -1,0 +1,32 @@
+{
+  "name": "ms-shadow-dungeon",
+  "version": "1.0.0",
+  "description": "PixiJS test project",
+  "main": "",
+  "scripts": {
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "webpack --config ./config/webpack-server.config.js",
+    "build:client": "webpack --config ./config/webpack-client.config.js",
+    "watch": "concurrently \"webpack --config ./config/webpack-server.config.js --watch\" \"webpack --config ./config/webpack-client.config.js --watch\"",
+    "start": "nodemon ./dist/server.js"
+  },
+  "author": "AN602",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "@types/pixi.js": "^4.8.0",
+    "app-root-path": "^2.1.0",
+    "concurrently": "^4.0.1",
+    "express": "^4.16.3",
+    "nodemon": "^1.18.4",
+    "ts-loader": "^5.1.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.18.0",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "pixi-layers": "^0.1.9",
+    "pixi-shadows": "0.0.3",
+    "pixi.js": "^4.8.2"
+  }
+}
