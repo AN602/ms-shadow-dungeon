@@ -1,75 +1,67 @@
-import * as PIXI from 'pixi.js';
-import "pixi-layers";
-import "pixi-shadows";
+import { PIXI_EXTENDED } from '../typings/pixi-extended';
+
+import * as Viewport from 'pixi-viewport';
+import { addShadowElementToViewPort } from './elements/elements';
+import { mainLoop } from './loop';
+
+import './input/keyboard';
+
+window.maxVelocity = 10;
+window.globalVelocity = { vx: 0, vy: 0 };
+window.globalVelocityTiming = { vxt: null, vyt: null };
 
 // Create your application
-var width = 1280;
-var height = 720;
-var app = new PIXI.Application(width, height);
+const innerWidth = window.innerWidth;
+const innerHeight = window.innerHeight;
+var app = new PIXI_EXTENDED.Application(innerWidth, innerHeight);
+
 document.body.appendChild(app.view);
 
 // Create a world container
-var world = PIXI.shadows.init(app, world);
-
-// A function to combine different assets if your world object, but give them a common transform by using pixi-layers
-// It is of course recommended to create a custom class for this, but this demo just shows the minimal steps required
-function createShadowSprite(texture, shadowTexture) {
-    var container = new PIXI.Container(); // This represents your final 'sprite'
-
-    // Things that create shadows
-    if (shadowTexture) {
-        var shadowCastingSprite = new PIXI.Sprite(shadowTexture);
-        shadowCastingSprite.parentGroup = PIXI.shadows.casterGroup;
-        container.addChild(shadowCastingSprite);
-    }
-
-    // The things themselves (their texture)
-    var sprite = new PIXI.Sprite(texture);
-    container.addChild(sprite);
-
-    return container;
-}
-
-// Create a light that casts shadows
-var shadow = new PIXI.shadows.Shadow(700, 1);
-shadow.position.set(450, 150);
-world.addChild(shadow);
+var world = PIXI_EXTENDED.shadows.init(app, world);
 
 // Create a background (that doesn't cast shadows)
-var bgTexture = PIXI.Texture.fromImage("background.jpg");
+var bgTexture = PIXI_EXTENDED.Texture.fromImage("background.jpg");
 var background = new PIXI.Sprite(bgTexture);
+background.width = innerWidth;
+background.height = innerHeight;
 world.addChild(background);
 
+// create viewport
+var viewport = new Viewport({
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
+    worldWidth: 1000,
+    worldHeight: 1000,
+});
+
+app.stage.addChild(viewport);
+
+// activate plugins
+viewport
+    .drag()
+    .pinch()
+    .wheel()
+    .decelerate();
+
 // Create some shadow casting rocks
-var demonTexture = PIXI.Texture.fromImage("rocks.png");
-demonTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST; //For pixelated scaling
+var rockTexture = PIXI_EXTENDED.Texture.fromImage("rocks.png");
+rockTexture.baseTexture.scaleMode = PIXI_EXTENDED.SCALE_MODES.NEAREST; //For pixelated scaling
 
 let assetScaling = 0.25
 
-var demon1 = createShadowSprite(demonTexture, demonTexture);
-demon1.position.set(100, 100);
-demon1.scale.set(assetScaling);
-world.addChild(demon1);
+window.elements = new Array();
 
-var demon2 = createShadowSprite(demonTexture, demonTexture);
-demon2.position.set(500, 100);
-demon2.scale.set(assetScaling);
-world.addChild(demon2);
+addShadowElementToViewPort(viewport, window.elements, rockTexture, 200, 200, assetScaling);
+addShadowElementToViewPort(viewport, window.elements, rockTexture, 400, 200, assetScaling);
+addShadowElementToViewPort(viewport, window.elements, rockTexture, 200, 400, assetScaling);
 
-var demon3 = createShadowSprite(demonTexture, demonTexture);
-demon3.position.set(300, 200);
-demon3.scale.set(assetScaling);
-world.addChild(demon3);
+window.shadowLights = new Array();
+window.shadowLights.push(new PIXI_EXTENDED.shadows.Shadow(800, 1));
+window.shadowLights[0].position.set(450, 150);
+viewport.addChild(window.shadowLights[0]);
 
 // Make the light track your mouse
 world.interactive = true;
-world.on("mousemove", function(event) {
-    shadow.position.copy(event.data.global);
-});
 
-// Create a light point on click
-world.on("pointerdown", function(event) {
-    var shadow = new PIXI.shadows.Shadow(700, 0.7);
-    shadow.position.copy(event.data.global);
-    world.addChild(shadow);
-});
+app.ticker.add(delta => mainLoop(delta));

@@ -7,7 +7,7 @@
     "build": "npm run build:server && npm run build:client",
     "build:server": "webpack --config ./config/webpack-server.config.js",
     "build:client": "webpack --config ./config/webpack-client.config.js",
-    "watch": "concurrently \"webpack --config ./config/webpack-server.config.js --watch\" \"webpack --config ./config/webpack-client.config.js --watch\"",
+    "watch": "concurrently \"webpack --config ./config/webpack-server.config.js --watch\" \"webpack --config ./config/webpack-client.config.js --watch\" \"nodemon ./dist/server.js\"",
     "start": "nodemon ./dist/server.js"
   },
   "author": "AN602",
@@ -27,6 +27,7 @@
   "dependencies": {
     "pixi-layers": "^0.1.9",
     "pixi-shadows": "0.0.3",
+    "pixi-viewport": "^3.9.1",
     "pixi.js": "^4.8.2"
   }
 }

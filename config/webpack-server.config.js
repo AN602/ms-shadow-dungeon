@@ -1,6 +1,7 @@
 const root = require('app-root-path').path;
 
 module.exports = {
+    mode: 'production',
     entry: `${root}/server/server.ts`,
     target: 'node',
     externals: [
