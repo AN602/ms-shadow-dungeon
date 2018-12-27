@@ -1,4 +1,5 @@
 import { decreaseVelocityX, decreaseVelocityY, increaseVelocityX, increaseVelocityY, resetVelocityX, resetVelocityY } from "../movement/velocity-control";
+import { increaseRotationSpeed, resetRotationSpeed, decreaseRotationSpeed } from "../movement/rotation-control";
 
 interface KeyBinding {
   code: number;
@@ -62,16 +63,16 @@ let timingDeceleration = 100;
 //Left arrow key `press` method
 left.press = () => {
   if (!right.isDown) {
-    decreaseVelocityX(timingAcceleration);
+    decreaseRotationSpeed(timingAcceleration);
   }
 };
 
 //Left arrow key `release` method
 left.release = () => {
   if (!right.isDown) {
-    resetVelocityX(timingDeceleration);
+    resetRotationSpeed(timingDeceleration);
   } else {
-    increaseVelocityX(timingAcceleration);
+    increaseRotationSpeed(timingAcceleration);
   }
 };
 
@@ -93,15 +94,15 @@ up.release = () => {
 //Right
 right.press = () => {
   if (!left.isDown) {
-    increaseVelocityX(timingAcceleration);
+    increaseRotationSpeed(timingAcceleration);
   }
 };
 
 right.release = () => {
   if (!left.isDown) {
-    resetVelocityX(timingDeceleration);
+    resetRotationSpeed(timingDeceleration);
   } else {
-    decreaseVelocityX(timingAcceleration);
+    decreaseRotationSpeed(timingAcceleration);
   }
 };
 

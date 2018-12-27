@@ -3,6 +3,10 @@ declare interface Window {
     globalVelocity?: GlobalVelocity;
     globalVelocityTiming?: GlobalVelocityTiming;
 
+    maxRotationSpeed?: number;
+    globalRotationSpeed?: number;
+    globalRotationSpeedTiming: NodeJS.Timer;
+
     elements: any[];
     shadowLights: any[];
 }
