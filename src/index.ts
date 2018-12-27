@@ -48,6 +48,9 @@ viewport
 var rockTexture = PIXI_EXTENDED.Texture.fromImage("rocks.png");
 rockTexture.baseTexture.scaleMode = PIXI_EXTENDED.SCALE_MODES.NEAREST; //For pixelated scaling
 
+var jetTexture = PIXI_EXTENDED.Texture.fromImage("jet.png");
+jetTexture.baseTexture.scaleMode = PIXI_EXTENDED.SCALE_MODES.NEAREST; //For pixelated scaling
+
 let assetScaling = 0.25
 
 window.elements = new Array();
@@ -56,10 +59,13 @@ addShadowElementToViewPort(viewport, window.elements, rockTexture, 200, 200, ass
 addShadowElementToViewPort(viewport, window.elements, rockTexture, 400, 200, assetScaling);
 addShadowElementToViewPort(viewport, window.elements, rockTexture, 200, 400, assetScaling);
 
+
 window.shadowLights = new Array();
 window.shadowLights.push(new PIXI_EXTENDED.shadows.Shadow(800, 1));
 window.shadowLights[0].position.set(450, 150);
 viewport.addChild(window.shadowLights[0]);
+
+addShadowElementToViewPort(viewport, window.shadowLights, jetTexture, 500, 500, 0.2);
 
 // Make the light track your mouse
 world.interactive = true;

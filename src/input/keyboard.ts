@@ -56,52 +56,65 @@ let up = keyboard(38);
 let right = keyboard(39);
 let down = keyboard(40);
 
-let timing = 100;
+let timingAcceleration = 50;
+let timingDeceleration = 100;
 
 //Left arrow key `press` method
 left.press = () => {
-  //Change the cat's velocity when the key is pressed
-  decreaseVelocityX(timing);
+  if (!right.isDown) {
+    decreaseVelocityX(timingAcceleration);
+  }
 };
 
 //Left arrow key `release` method
 left.release = () => {
-  //If the left arrow has been released, and the right arrow isn't down,
-  //and the cat isn't moving vertically:
-  //Stop the cat
-  if (!right.isDown && window.globalVelocity.vy === 0) {
-    resetVelocityX(timing);
+  if (!right.isDown) {
+    resetVelocityX(timingDeceleration);
+  } else {
+    increaseVelocityX(timingAcceleration);
   }
 };
 
 //Up
 up.press = () => {
-  decreaseVelocityY(timing);
+  if (!down.isDown) {
+    decreaseVelocityY(timingAcceleration);
+  }
 };
 
 up.release = () => {
-  if (!down.isDown && window.globalVelocity.vx === 0) {
-    resetVelocityY(timing);
+  if (!down.isDown) {
+    resetVelocityY(timingDeceleration);
+  } else {
+    increaseVelocityY(timingAcceleration);
   }
 };
 
 //Right
 right.press = () => {
-  increaseVelocityX(timing);
+  if (!left.isDown) {
+    increaseVelocityX(timingAcceleration);
+  }
 };
 
 right.release = () => {
-  if (!left.isDown && window.globalVelocity.vy === 0) {
-    resetVelocityX(timing);
+  if (!left.isDown) {
+    resetVelocityX(timingDeceleration);
+  } else {
+    decreaseVelocityX(timingAcceleration);
   }
 };
 
 //Down
 down.press = () => {
-  increaseVelocityY(timing);
+  if (!up.isDown) {
+    increaseVelocityY(timingAcceleration);
+  }
 };
 down.release = () => {
-  if (!up.isDown && window.globalVelocity.vx === 0) {
-    resetVelocityY(timing);
+  if (!up.isDown) {
+    resetVelocityY(timingDeceleration);
+  } else {
+    decreaseVelocityY(timingAcceleration);
   }
 };
